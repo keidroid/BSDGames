@@ -1,25 +1,26 @@
-PROG=	adventure
-SRCS=	main.c init.c done.c save.c subr.c vocab.c wizard.c io.c data.c crc.c
-OBJS=   main.o init.o done.o save.o subr.o vocab.o wizard.o io.o data.o crc.o
+UPROG=	adventure
+SRCS=	trans.c main.c init.c done.c save.c subr.c vocab.c wizard.c io.c data.c crc.c 
+OBJS=   trans.o main.o init.o done.o save.o subr.o vocab.o wizard.o io.o data.o crc.o
 MAN=	adventure.6
 HIDEGAME=hidegame
 CLEANFILES+=setup setup.lo data.c
 
 .c.o:
-	gcc -std=c90 -O $(DBX) -c $<
+	gcc -std=c99 -O $(DBX) -c $<
 
 adventure:	$(OBJS)
-	gcc -std=c90 -O $(DBX) -o adventure $(OBJS)
+	gcc -std=c99 -O $(DBX) -o adventure $(OBJS)
 
-data.c: glorkz setup
-	${_MKTARGET_CREATE}
-	./setup glorkz > data.c
+#data.c: glorkz setup
+#	${_MKTARGET_CREATE}
+#	./setup glorkz > data.c
 
-setup.lo: hdr.h
+#setup.lo: hdr.h
+#setup: setup.lo
+#	${_MKTARGET_LINK}
+#	${HOST_LINK.c} -o ${.TARGET} ${.ALLSRC}
 
-setup: setup.lo
-	${_MKTARGET_LINK}
-	${HOST_LINK.c} -o ${.TARGET} ${.ALLSRC}
+trans.o: 	extern.h hdr.h trans.h
 
 main.o:		extern.h hdr.h
 

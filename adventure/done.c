@@ -111,27 +111,21 @@ done(entry)		/* entry=1 means goto 13000 */	/* game is over */
 		mspeak(1);
 	if (entry == 3)
 		rspeak(136);
-	printf("\n\n\nYou scored %d out of a ", (sc = score()));
-	printf("possible %d using %d turns.\n", mxscor, turns);
+	printf("\n\n\n%d点中%d点を獲得した。", mxscor, (sc = score()));
+	printf("行動回数は%d回だった。", turns);
 	for (i = 1; i <= clsses; i++)
 		if (cval[i] >= sc) {
 			speak(&ctext[i]);
 			if (i == clsses - 1) {
-				printf("To achieve the next higher rating");
-				printf(" would be a neat trick!\n\n");
-				printf("Congratulations!!\n");
+				printf("最高ランクに達した!\n\n");
+				printf("おめでとう!!\n");
 				exit(0);
 			}
 			k = cval[i] + 1 - sc;
-			printf("To achieve the next higher rating, you need");
-			printf(" %d more point", k);
-			if (k == 1)
-				printf(".\n");
-			else
-				printf("s.\n");
+			printf("次のランクに達するには、さらに%d点必要だ。\n", k);
 			exit(0);
 		}
-	printf("You just went off my scale!!!\n");
+	printf("私の理解を超えている!!!\n");
 	exit(0);
 }
 

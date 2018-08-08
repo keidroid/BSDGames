@@ -74,7 +74,7 @@ extern int     saveday, savet, mxscor, latncy;
 
 #define SHORT 50		/* How short is a demo game? */
 
-#define MAXSTR  20		/* max length of user's words */
+#define MAXSTR  80		/* max length of user's words */
 
 #define HTSIZE  512		/* max number of vocab words */
 extern struct hashtab {		/* hash table for vocabulary */
@@ -157,3 +157,7 @@ extern	int     turns, lmwarn, iwest, knfloc, detail,	/* various flags and
 extern	int     demo, limit;
 
 #define DECR(a,b,c,d,e) decr(a+'+',b+'-',c+'#',d+'&',e+'%')
+#if defined(_WIN32)
+#define srandom(seed)	srand(seed)
+#define random()	rand()
+#endif

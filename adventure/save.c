@@ -120,6 +120,23 @@ struct savestruct save_array[] =
 	{NULL, 0}
 };
 
+#if defined(_WIN32)
+static char dir_name[MAX_PATH] = "";
+static void
+getdir(path)
+const char *path;
+{
+	char *p;
+
+	strcpy(dir_name, path);
+	for(p = dir_name + strlen(dir_name); p >= dir_name && *p != '\\'; p--)
+		*p = 0;
+
+	if(strcmp(dir_name, "") != 0)
+		return;
+}
+#endif
+
 int
 save(outfile)			/* Two passes on data: first to get checksum,
 				 * second */
@@ -137,9 +154,13 @@ save(outfile)			/* Two passes on data: first to get checksum,
 		sum = crc(p->address, p->width);
 	srandom((int) sum);
 
+#if defined(_WIN32)
+	memmove(outfile + strlen(dir_name), outfile, strlen(outfile) + 1);
+	memcpy(outfile, dir_name, strlen(dir_name));
+#endif
 	if ((out = fopen(outfile, "wb")) == NULL) {
 		fprintf(stderr,
-		    "Hmm.  The name \"%s\" appears to be magically blocked.\n",
+		    "むむ。\"%s\"という名前は魔法の力で禁止されているようだ。\n",
 		    outfile);
 		return 1;
 	}
@@ -150,7 +171,7 @@ save(outfile)			/* Two passes on data: first to get checksum,
 		fwrite(p->address, p->width, 1, out);
 	}
 	if (fclose(out) != 0) {
-		warn("writing %s", outfile);
+		warn("%sの書き込みに失敗した。", outfile);
 		return 1;
 	}
 	return 0;
@@ -166,9 +187,12 @@ restore(infile)
 	long    sum, cksum = 0;
 	int     i;
 
+#if defined(_WIN32)
+	getdir(infile);
+#endif
 	if ((in = fopen(infile, "rb")) == NULL) {
 		fprintf(stderr,
-		    "Hmm.  The file \"%s\" appears to be magically blocked.\n",
+		    "むむ。\"%s\"という名前は魔法の力で禁止されているようだ。\n",
 		    infile);
 		return 1;
 	}

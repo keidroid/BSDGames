@@ -265,8 +265,7 @@ fdwarf()
 	if (dtotal == 0)
 		return (2000);
 	if (dtotal != 1) {
-		printf("There are %d threatening little dwarves ", dtotal);
-		printf("in the room with you.\n");
+		printf("%d人の好戦的なドワーフが部屋にいる。", dtotal);
 	} else
 		rspeak(4);
 	if (attack == 0)
@@ -276,14 +275,14 @@ fdwarf()
 	if (saved != -1)
 		dflag = 20;
 	if (attack != 1) {
-		printf("%d of them throw knives at you!\n", attack);
+		printf("%d人がナイフを投げつけた!\n", attack);
 		k = 6;
 l82:		if (stick <= 1) {	/* 82 */
 			rspeak(k + stick);
 			if (stick == 0)
 				return (2000);
 		} else
-			printf("%d of them get you!\n", stick);	/* 83 */
+			printf("%d本のナイフが命中した!\n", stick);	/* 83 */
 		oldlc2 = loc;
 		return (99);
 	}
@@ -496,7 +495,8 @@ void
 bug(n)
 	int     n;
 {
-	printf("Please tell jim@rand.org that fatal bug %d happened.\n", n);
+	printf("致命的なバグ %d番 です。jim@rand.orgに報告してください。\n", n);
+	printf("訳者注: この日本語版のバグは送らないでください。\n");
 	exit(1);
 }
 
@@ -543,8 +543,8 @@ checkhints()
 l40010:	hintlc[hint] = 0;
 		if (!yes(hints[hint][3], 0, 54))
 			continue;
-		printf("I am prepared to give you a hint, but it will ");
-		printf("cost you %d points.\n", hints[hint][2]);
+		printf("あなたにヒントを出してもよい。");
+		printf("しかし%d点必要だ。\n", hints[hint][2]);
 		hinted[hint] = yes(175, hints[hint][4], 54);
 l40020:	hintlc[hint] = 0;
 	}
@@ -563,7 +563,7 @@ trsay()
 		obj = 0;
 		return (2630);
 	}
-	printf("\nOkay, \"%s\".\n", wd2);
+	printf("\nOK. \"%s\".\n", wd2);
 	return (2012);
 }
 

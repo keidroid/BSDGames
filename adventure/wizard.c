@@ -78,7 +78,8 @@ void
 poof()
 {
 	strcpy(magic, DECR('d', 'w', 'a', 'r', 'f'));
-	latncy = 45;
+	/*latncy = 45;*/
+	latncy = 0;
 }
 
 int
@@ -94,8 +95,7 @@ Start()
 		saved = -1;
 		return (FALSE);
 	}
-	printf("This adventure was suspended a mere %d minute%s ago.",
-	    delay, delay == 1 ? "" : "s");
+	printf("この冒険は中断してからまだ%d分しかたっていない。\n", delay);
 	if (delay <= latncy / 3) {
 		mspeak(2);
 		exit(0);
@@ -129,9 +129,9 @@ void
 ciao()
 {
 	char   *c;
-	char    fname[80];
+	char    fname[255];
 
-	printf("What would you like to call the saved version?\n");
+	printf("ファイル名は?\n");
 	/* XXX - should use fgetln to avoid arbitrary limit */
 	for (c = fname; c < fname + sizeof fname - 1; c++) {
 		int ch;
@@ -143,8 +143,9 @@ ciao()
 	*c = 0;
 	if (save(fname) != 0)
 		return;		/* Save failed */
-	printf("To resume, say \"adventure %s\".\n", fname);
-	printf("\"With these rooms I might now have been familiarly acquainted.\"\n");
+	printf("復帰するときは \"adventure %s\"と入力すること。\n", fname);
+	printf("(または実行ファイルにドロップすること。)\n");
+	printf("「これらの場所については、私はよくわからない。」\n");
 	exit(0);
 }
 

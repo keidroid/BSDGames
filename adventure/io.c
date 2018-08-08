@@ -51,6 +51,7 @@ __RCSID("$NetBSD: io.c,v 1.15 2003/09/19 10:01:53 itojun Exp $");
 #include <stdlib.h>
 #include "hdr.h"
 #include "extern.h"
+//#include "trans.c"	/* for translation */
 
 
 void
@@ -64,6 +65,8 @@ getin(wrd1, wrd2)		/* get command from user        */
 	*wrd1 = wd1buf;				/* return ptr to internal str */
 	*wrd2 = wd2buf;
 	wd2buf[0] = 0;				/* in case it isn't set here */
+	if(jtoe(wd1buf,wd2buf))		/* translate */
+		return;
 	for (s = wd1buf, first = 1, numch = 0;;) {
 		if ((*s = getchar()) >= 'A' && *s <= 'Z')
 			*s = *s - ('A' - 'a');
@@ -86,11 +89,11 @@ getin(wrd1, wrd2)		/* get command from user        */
 				return;
 			}
 		case EOF:
-			printf("user closed input stream, quitting...\n");
+			printf("入力ストリームか閉じられた。終了する…\n");
 			exit(0);
 		default:
 			if (++numch >= MAXSTR) {	/* string too long */
-				printf("Give me a break!!\n");
+				printf("ちょっと待て!!\n");
 				wd1buf[0] = wd2buf[0] = 0;
 				FLUSHLINE;
 				return;
@@ -108,18 +111,19 @@ yes(x, y, z)			/* confirm with rspeak          */
 	int    ch;
 	for (;;) {
 		rspeak(x);	/* tell him what we want */
+		jtoe_yn();	/* tranlate */
 		if ((ch = getchar()) == 'y')
 			result = TRUE;
 		else if (ch == 'n')
 			result = FALSE;
 		else if (ch == EOF) {
-			printf("user closed input stream, quitting...\n");
+			printf("入力ストリームか閉じられた。終了する…\n");
 			exit(0);
 		}
 		FLUSHLINE;
 		if (ch == 'y' || ch == 'n')
 			break;
-		printf("Please answer the question.\n");
+		printf("質問に答えること。(「はい」または「いいえ」)\n");
 	}
 	if (result == TRUE)
 		rspeak(y);
@@ -136,18 +140,19 @@ yesm(x, y, z)			/* confirm with mspeak          */
 	int    ch;
 	for (;;) {
 		mspeak(x);	/* tell him what we want */
+		jtoe_yn();	/* translate */
 		if ((ch = getchar()) == 'y')
 			result = TRUE;
 		else if (ch == 'n')
 			result = FALSE;
 		else if (ch == EOF) {
-			printf("user closed input stream, quitting...\n");
+			printf("入力ストリームか閉じられた。終了する…\n");
 			exit(0);
 		}
 		FLUSHLINE;
 		if (ch == 'y' || ch == 'n')
 			break;
-		printf("Please answer the question.\n");
+		printf("質問に答えること。(「はい」または「いいえ」)\n");
 	}
 	if (result == TRUE)
 		mspeak(y);

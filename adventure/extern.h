@@ -128,3 +128,9 @@ int Start(void);
 int wizard(void);
 void ciao(void);
 int ran(int);
+
+/* trans.c */
+int jtoe(char *, char *);
+int jtoe_yn(void);
+const char *etoj(const char *);
+const char *etoj_query(const char *);

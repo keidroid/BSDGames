@@ -83,7 +83,7 @@ main(argc, argv)
 		case 0:	/* The restore worked fine */
 			yea = Start();
 			k = null;
-			unlink(argv[1]);	/* Don't re-use the save */
+			/*unlink(argv[1]);*/	/* Don't re-use the save */
 			goto l8;		/* Get where we're going */
 		case 1:				/* Couldn't open it */
 			errx(1,"can't open file");	/* So give up */
@@ -321,7 +321,7 @@ l4080:
 		case 21:
 		case 28:	/* find,feed,break */
 		case 29:	/* wake */
-	l8000:		printf("%s what?\n", wd1);
+	l8000:		printf("%s%s?\n", etoj_query(wd1), etoj(wd1));
 			obj = 0;
 			goto l2600;
 		case 4:
@@ -388,9 +388,7 @@ l4080:
 			goto l9230;	/* blast */
 		case 24:		/* score: 8240 */
 			scorng = TRUE;
-			printf("If you were to quit now, you would score");
-			printf(" %d out of a possible ", score());
-			printf("%d.", mxscor);
+			printf("今終了すると、%d点中%d点獲得することになる。\n", mxscor, score());
 			scorng = FALSE;
 			gaveup = yes(143, 54, 54);
 			if (gaveup)
@@ -442,18 +440,16 @@ l4080:
 			spk = 201;
 			if (demo)
 				goto l2011;
-			printf("I can suspend your adventure for you so");
-			printf(" you can resume later, but\n");
-			printf("you will have to wait at least");
-			printf(" %d minutes before continuing.", latncy);
+			printf("後で再開できるように状態を保存する。\n");
+			printf("しかし、再開するためには最低%d分待たなければならない。\n", latncy);
 			if (!yes(200, 54, 54))
 				goto l2012;
 			datime(&saveday, &savet);
 			ciao();	/* Do we quit? */
 			continue;	/* Maybe not */
 		case 31:	/* hours=8310 */
-			printf("Colossal cave is closed 9am-5pm Mon ");
-			printf("through Fri except holidays.\n");
+			printf("コロッサル・ケイブは午前9時から午後5時(月曜から金曜、休日を除く)は運営\n");
+			printf("を中止しています。\n");
 			goto l2012;
 		default:
 			bug(23);
@@ -727,7 +723,7 @@ l5010:		if (*wd2 != 0)
 			goto l2800;
 		if (verb != 0)
 			goto l4090;
-		printf("What do you want to do with the %s?\n", wd1);
+		printf("%sをどうする?\n", etoj(wd1));
 		goto l2600;
 l5100:		if (k != grate)
 			goto l5110;
@@ -759,7 +755,7 @@ l5140:		if (obj != rod || !here(rod2))
 		goto l5010;
 l5190:		if ((verb == find || verb == invent) && *wd2 == 0)
 			goto l5010;
-		printf("I see no %s here\n", wd1);
+		printf("このあたりに%sは見あたらない。\n", etoj(wd1));
 		goto l2012;
 	}
 }
