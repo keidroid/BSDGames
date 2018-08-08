@@ -1,0 +1,5 @@
+*.o
+.DS_Store
+adventure
+data.c
+setup

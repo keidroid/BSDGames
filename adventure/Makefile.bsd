@@ -9,11 +9,11 @@ CLEANFILES+=setup setup.lo data.c
 
 data.c: glorkz setup
 	${_MKTARGET_CREATE}
-	./setup ${.CURDIR}/glorkz > data.c
+	./setup glorkz > data.c
 
 setup.lo: hdr.h
 setup: setup.lo
 	${_MKTARGET_LINK}
 	${HOST_LINK.c} -o ${.TARGET} ${.ALLSRC}
 
-.include <bsd.prog.mk>
+# .include <bsd.prog.mk>
